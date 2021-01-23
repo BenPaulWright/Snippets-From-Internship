@@ -1,0 +1,251 @@
+﻿<local:BaseUserControl x:Class="SpectroVision_Setup_Wizard.UserControls.TransportConfigurator"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:local="clr-namespace:SpectroVision_Setup_Wizard.UserControls"
+                       xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                       mc:Ignorable="d"
+                       d:DataContext="{d:DesignInstance local:TransportConfigurator, IsDesignTimeCreatable=True}"
+                       x:Name="Root"
+                       Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="GearSlider" TargetType="{x:Type Slider}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                    SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Track x:Name="PART_Track" Grid.Row="1">
+                        <Track.Thumb>
+                            <Thumb x:Name="Thumb" Focusable="False" Height="18" OverridesDefaultStyle="True"
+                                   VerticalAlignment="Center" Width="11">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="{x:Type Thumb}">
+                                        <Canvas Width="{Binding ElementName=G1, Path=ActualWidth}"
+                                                Height="{Binding ElementName=G1, Path=ActualHeight}"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <local:UiGear x:Name="G1" Selected="True"/>
+                                        </Canvas>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="GearSlider180" TargetType="{x:Type Slider}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                    SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Track x:Name="PART_Track" Grid.Row="1">
+                        <Track.Thumb>
+                            <Thumb x:Name="Thumb" Focusable="False" Height="18" OverridesDefaultStyle="True"
+                                   VerticalAlignment="Center" Width="11">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="{x:Type Thumb}">
+                                        <Canvas Width="{Binding ElementName=G2, Path=ActualWidth}"
+                                                Height="{Binding ElementName=G2, Path=ActualHeight}"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <local:UiGear x:Name="G2" Selected="True" Angle="180" />
+                                        </Canvas>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock>
+            <Run Text="Transport Length:" />
+            <Run Text="{Binding TransportLength, ElementName=Root}" />
+        </TextBlock>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <Button Margin="3" Width="70" VerticalAlignment="Bottom" Height="25" Content="Find Home"
+                    Click="Clicked_Find_Home" IsEnabled="{Binding EnableHomingButton, ElementName=Root}" />
+            <Button Margin="3" Width="70" VerticalAlignment="Bottom" Height="25" Content="Find Length"
+                    Click="Clicked_Find_Length" Name="FindLengthButton" IsEnabled="{Binding EnableFindLengthButton, ElementName=Root}" />
+        </StackPanel>
+
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="50" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="18" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Viewbox Grid.Column="8" Grid.Row="0" Grid.RowSpan="3" Width="30">
+                <local:LockButton Grid.Column="8" Grid.Row="0"
+                              HorizontalAlignment="Center"
+                              Grid.RowSpan="3"
+                              MouseDown="LockButton_MouseDown"/>
+            </Viewbox>
+
+            <!--Motor 1-->
+            <local:UiMotor x:Name="Motor1Op"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       VerticalAlignment="Bottom"
+                       MouseDown="SelectMotor"/>
+
+
+            <!--Motor 2-->
+            <local:UiMotor x:Name="Motor2Op"
+                       Grid.Column="0" Grid.Row="2"
+                       Grid.ColumnSpan="3"
+                       VerticalAlignment="Top"
+                       MouseDown="SelectMotor"
+                       Angle="180"/>
+
+            <!--Motor 3-->
+            <local:UiMotor x:Name="Motor1Gear"
+                       Grid.Column="5"
+                       Grid.ColumnSpan="3"
+                       VerticalAlignment="Bottom"
+                       MouseDown="SelectMotor"/>
+
+            <!--Motor 4-->
+            <local:UiMotor x:Name="Motor2Gear"
+                       Grid.Column="5" Grid.Row="2"
+                       Grid.ColumnSpan="3"
+                       VerticalAlignment="Top"
+                       MouseDown="SelectMotor"
+                       Angle="180"/>
+
+
+            <!--Operator-->
+            <TextBlock Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   Text="O" />
+
+            <!--Gear-->
+            <TextBlock Grid.Column="7" Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   Text="G" />
+
+
+            <!--Transport Arm-->
+            <local:UiTransport Grid.Column="2"
+                           Grid.ColumnSpan="4"
+                           Grid.Row="1"/>
+
+            <local:UiHomeIndicator x:Name="HomeOp"
+                               MouseDown="SelectHome"
+                               Grid.Row="1"
+                               Grid.Column="1"/>
+
+            <local:UiHomeIndicator x:Name="HomeGear"
+                               MouseDown="SelectHome"
+                               Grid.Row="1"
+                               Grid.Column="6"/>
+
+
+            <!--Web Direction 1-->
+            <local:UiWebDirectionIndicator x:Name="Web1"
+                                       MouseDown="SelectWebDirection"
+                                       Grid.Column="8"
+                                       Grid.Row="2"
+                                       VerticalAlignment="Top"
+                                       Margin="0,25"/>
+
+            <!--Web Direction 2-->
+            <local:UiWebDirectionIndicator x:Name="Web2"
+                                       MouseDown="SelectWebDirection"
+                                       Grid.Column="8"
+                                       VerticalAlignment="Bottom"
+                                       Margin="0,25"
+                                       Angle="180"/>
+
+            <local:UiSwitchSelector x:Name="NPN"
+                                Grid.Column="9"
+                                VerticalAlignment="Bottom"
+                                MouseDown="SelectSwitch"
+                                HorizontalAlignment="Center"
+                                Margin="0,30"
+                                SwitchType="NPN"/>
+
+            <local:UiSwitchSelector x:Name="PNP"
+                                Grid.Column="9" Grid.Row="2"
+                                MouseDown="SelectSwitch"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Center"
+                                Margin="0,30"
+                                SwitchType="PNP"/>
+
+
+            <local:UiGear x:Name="HardwareSet1Selectable"
+                      EnableFadeAndSelect="True"
+                      MouseDown="SelectHardwareSet"
+                      VerticalAlignment="Center"
+                      Grid.RowSpan="3"
+                      Grid.Column="3"
+                      Angle="180" />
+
+            <local:UiGear x:Name="HardwareSet2Selectable"
+                      EnableFadeAndSelect="True"
+                      MouseDown="SelectHardwareSet"
+                      VerticalAlignment="Center"
+                      Grid.RowSpan="3"
+                      Grid.Column="4"/>
+
+
+            <Slider Template="{DynamicResource GearSlider}"
+                Grid.Column="2" Grid.ColumnSpan="4"
+                Grid.Row="1" Margin="25,0"
+                x:Name="GearSlider2"
+                Minimum="0" Maximum="1"
+                Visibility="Hidden"
+                Thumb.DragCompleted="GearSlider_DragCompleted" />
+
+            <Slider Template="{DynamicResource GearSlider180}"
+                Grid.Column="2" Grid.ColumnSpan="4"
+                Grid.Row="1" Margin="25,0"
+                x:Name="GearSlider1"
+                Minimum="0" Maximum="1"
+                Visibility="Hidden"
+                Thumb.DragCompleted="GearSlider_DragCompleted" />
+        </Grid>
+
+    </Grid>
+</local:BaseUserControl>

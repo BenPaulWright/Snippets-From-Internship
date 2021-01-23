@@ -1,0 +1,28 @@
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step label="Select Chart Style" [editable]="false">
+    <app-chart-style-form (StyleSelected)="onStyleSelected($event)">
+    </app-chart-style-form>
+  </mat-step>
+  <mat-step label="Select Data" [editable]="false">
+    <app-line-chart-data-form
+      *ngIf="chartConfig.type == 'Line'"
+      (AxisSelected)="onAxisSelected($event)"
+    >
+    </app-line-chart-data-form>
+    <app-pie-chart-data-form
+      *ngIf="chartConfig.type == 'Pie'"
+      (DataSelected)="onDataSelected($event)"
+    >
+    </app-pie-chart-data-form>
+    <app-vertical-bar-chart-data-form
+      *ngIf="chartConfig.type == 'VerticalBar'"
+      (AxisSelected)="onAxisSelected($event)"
+    >
+    </app-vertical-bar-chart-data-form>
+  </mat-step>
+  <mat-step label="Filter Data" [editable]="false">
+    <app-filters-form
+      (FilterSelected)="filterSelected($event)"
+    ></app-filters-form>
+  </mat-step>
+</mat-horizontal-stepper>
